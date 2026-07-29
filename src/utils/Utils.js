@@ -11,6 +11,7 @@ export const formatThousands = (value) => Intl.NumberFormat('en-US', {
 }).format(value);
 
 export const getCssVariable = (variable) => {
+  if (typeof document === 'undefined') return '';
   return getComputedStyle(document.documentElement).getPropertyValue(variable).trim();
 };
 
@@ -38,14 +39,17 @@ const adjustOKLCHOpacity = (oklchColor, opacity) => {
 };
 
 export const adjustColorOpacity = (color, opacity) => {
+  if (!color) return `rgba(0, 0, 0, ${opacity})`;
   if (color.startsWith('#')) {
     return adjustHexOpacity(color, opacity);
   } else if (color.startsWith('hsl')) {
     return adjustHSLOpacity(color, opacity);
   } else if (color.startsWith('oklch')) {
     return adjustOKLCHOpacity(color, opacity);
+  } else if (color.startsWith('rgb')) {
+    return color;
   } else {
-    throw new Error('Unsupported color format');
+    return `rgba(0, 0, 0, ${opacity})`;
   }
 };
 
