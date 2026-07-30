@@ -250,3 +250,72 @@ export const intervalTestThresholds = {
 
 // RSA test default threshold (editable in settings, pending federation confirmation)
 export const rsaTestThreshold = 6.0;
+
+// مجموعات تدريبية
+export const trainingGroups = [
+  { id: 'g1', name: 'المجموعة الأولى - دولي', description: 'مجموعة الحكام الدوليين للإعداد البدني المتقدم', refereeIds: ['1', '6', '2'] },
+  { id: 'g2', name: 'المجموعة الثانية - أولى', description: 'مجموعة حكام الدرجة الأولى للتحضير البدني', refereeIds: ['3', '7', '4', '5'] },
+  { id: 'g3', name: 'مجموعة التعافي', description: 'مجموعة الحكام في فترة التعافي من الإصابات', refereeIds: ['8', '3'] },
+];
+
+export const trainingTypeLabels = {
+  general: 'لياقة عامة',
+  interval: 'تحضير Interval',
+  recovery: 'تعافي',
+};
+
+export const trainingTypeColors = {
+  general: { bg: 'bg-sky-500', text: 'text-sky-700', dot: 'bg-sky-500', light: 'bg-sky-100' },
+  interval: { bg: 'bg-violet-500', text: 'text-violet-700', dot: 'bg-violet-500', light: 'bg-violet-100' },
+  recovery: { bg: 'bg-emerald-500', text: 'text-emerald-700', dot: 'bg-emerald-500', light: 'bg-emerald-100' },
+};
+
+// جلسات تدريب (تظهر في التقويم)
+export const trainingSessions = [
+  { id: 's1', groupId: 'g1', date: '2025-07-02', time: '08:00', location: 'ملعب القاهرة الدولي', type: 'general', attendance: [{ refereeId: '1', status: 'present' }, { refereeId: '6', status: 'present' }, { refereeId: '2', status: 'present' }], notes: '' },
+  { id: 's2', groupId: 'g1', date: '2025-07-07', time: '08:00', location: 'ملعب القاهرة الدولي', type: 'interval', attendance: [{ refereeId: '1', status: 'present' }, { refereeId: '6', status: 'present' }, { refereeId: '2', status: 'absent' }], notes: '' },
+  { id: 's3', groupId: 'g2', date: '2025-07-03', time: '17:00', location: 'ملعب الإسكندرية', type: 'general', attendance: [{ refereeId: '3', status: 'present' }, { refereeId: '7', status: 'present' }, { refereeId: '4', status: 'present' }, { refereeId: '5', status: 'excused' }], notes: '' },
+  { id: 's4', groupId: 'g2', date: '2025-07-09', time: '17:00', location: 'ملعب الإسكندرية', type: 'interval', attendance: [{ refereeId: '3', status: 'present' }, { refereeId: '7', status: 'absent' }, { refereeId: '4', status: 'present' }, { refereeId: '5', status: 'present' }], notes: '' },
+  { id: 's5', groupId: 'g3', date: '2025-07-04', time: '10:00', location: 'مركز التأهيل - الجيزة', type: 'recovery', attendance: [{ refereeId: '8', status: 'present' }, { refereeId: '3', status: 'present' }], notes: '' },
+  { id: 's6', groupId: 'g1', date: '2025-07-14', time: '08:00', location: 'ملعب القاهرة الدولي', type: 'general', attendance: [{ refereeId: '1', status: 'present' }, { refereeId: '6', status: 'present' }, { refereeId: '2', status: 'present' }], notes: '' },
+  { id: 's7', groupId: 'g2', date: '2025-07-16', time: '17:00', location: 'ملعب الإسكندرية', type: 'recovery', attendance: [{ refereeId: '3', status: 'present' }, { refereeId: '7', status: 'present' }, { refereeId: '4', status: 'present' }, { refereeId: '5', status: 'present' }], notes: '' },
+  { id: 's8', groupId: 'g1', date: '2025-07-21', time: '08:00', location: 'ملعب القاهرة الدولي', type: 'interval', attendance: [{ refereeId: '1', status: 'present' }, { refereeId: '6', status: 'present' }, { refereeId: '2', status: 'present' }], notes: '' },
+  { id: 's9', groupId: 'g3', date: '2025-07-23', time: '10:00', location: 'مركز التأهيل - الجيزة', type: 'recovery', attendance: [{ refereeId: '8', status: 'present' }, { refereeId: '3', status: 'excused' }], notes: '' },
+  { id: 's10', groupId: 'g2', date: '2025-07-28', time: '17:00', location: 'ملعب الإسكندرية', type: 'interval', attendance: [{ refereeId: '3', status: 'present' }, { refereeId: '7', status: 'present' }, { refereeId: '4', status: 'absent' }, { refereeId: '5', status: 'present' }], notes: '' },
+  { id: 's11', groupId: 'g1', date: '2025-08-04', time: '08:00', location: 'ملعب القاهرة الدولي', type: 'general', attendance: [{ refereeId: '1', status: 'present' }, { refereeId: '6', status: 'present' }, { refereeId: '2', status: 'present' }], notes: '' },
+  { id: 's12', groupId: 'g2', date: '2025-08-06', time: '17:00', location: 'ملعب الإسكندرية', type: 'interval', attendance: [{ refereeId: '3', status: 'present' }, { refereeId: '7', status: 'present' }, { refereeId: '4', status: 'present' }, { refereeId: '5', status: 'present' }], notes: '' },
+  { id: 's13', groupId: 'g3', date: '2025-08-11', time: '10:00', location: 'مركز التأهيل - الجيزة', type: 'recovery', attendance: [{ refereeId: '8', status: 'present' }, { refereeId: '3', status: 'present' }], notes: '' },
+  { id: 's14', groupId: 'g1', date: '2025-08-13', time: '08:00', location: 'ملعب القاهرة الدولي', type: 'interval', attendance: [{ refereeId: '1', status: 'present' }, { refereeId: '6', status: 'present' }, { refereeId: '2', status: 'present' }], notes: '' },
+  { id: 's15', groupId: 'g2', date: '2025-08-20', time: '17:00', location: 'ملعب الإسكندرية', type: 'general', attendance: [{ refereeId: '3', status: 'present' }, { refereeId: '7', status: 'present' }, { refereeId: '4', status: 'present' }, { refereeId: '5', status: 'present' }], notes: '' },
+];
+
+// تقييمات RPE لكل حكم بعد كل جلسة
+export const rpeRecords = [
+  { id: 'rpe1', sessionId: 's1', refereeId: '1', rpeScore: 7, date: '2025-07-02' },
+  { id: 'rpe2', sessionId: 's1', refereeId: '6', rpeScore: 6, date: '2025-07-02' },
+  { id: 'rpe3', sessionId: 's1', refereeId: '2', rpeScore: 8, date: '2025-07-02' },
+  { id: 'rpe4', sessionId: 's2', refereeId: '1', rpeScore: 9, date: '2025-07-07' },
+  { id: 'rpe5', sessionId: 's2', refereeId: '6', rpeScore: 8, date: '2025-07-07' },
+  { id: 'rpe6', sessionId: 's3', refereeId: '3', rpeScore: 5, date: '2025-07-03' },
+  { id: 'rpe7', sessionId: 's3', refereeId: '7', rpeScore: 6, date: '2025-07-03' },
+  { id: 'rpe8', sessionId: 's3', refereeId: '4', rpeScore: 7, date: '2025-07-03' },
+  { id: 'rpe9', sessionId: 's4', refereeId: '3', rpeScore: 8, date: '2025-07-09' },
+  { id: 'rpe10', sessionId: 's4', refereeId: '4', rpeScore: 9, date: '2025-07-09' },
+  { id: 'rpe11', sessionId: 's4', refereeId: '5', rpeScore: 7, date: '2025-07-09' },
+  { id: 'rpe12', sessionId: 's5', refereeId: '8', rpeScore: 3, date: '2025-07-04' },
+  { id: 'rpe13', sessionId: 's5', refereeId: '3', rpeScore: 4, date: '2025-07-04' },
+  { id: 'rpe14', sessionId: 's6', refereeId: '1', rpeScore: 6, date: '2025-07-14' },
+  { id: 'rpe15', sessionId: 's6', refereeId: '6', rpeScore: 5, date: '2025-07-14' },
+  { id: 'rpe16', sessionId: 's6', refereeId: '2', rpeScore: 7, date: '2025-07-14' },
+  { id: 'rpe17', sessionId: 's7', refereeId: '3', rpeScore: 4, date: '2025-07-16' },
+  { id: 'rpe18', sessionId: 's7', refereeId: '7', rpeScore: 5, date: '2025-07-16' },
+  { id: 'rpe19', sessionId: 's7', refereeId: '4', rpeScore: 3, date: '2025-07-16' },
+  { id: 'rpe20', sessionId: 's7', refereeId: '5', rpeScore: 4, date: '2025-07-16' },
+  { id: 'rpe21', sessionId: 's8', refereeId: '1', rpeScore: 9, date: '2025-07-21' },
+  { id: 'rpe22', sessionId: 's8', refereeId: '6', rpeScore: 8, date: '2025-07-21' },
+  { id: 'rpe23', sessionId: 's8', refereeId: '2', rpeScore: 10, date: '2025-07-21' },
+  { id: 'rpe24', sessionId: 's9', refereeId: '8', rpeScore: 2, date: '2025-07-23' },
+  { id: 'rpe25', sessionId: 's10', refereeId: '3', rpeScore: 8, date: '2025-07-28' },
+  { id: 'rpe26', sessionId: 's10', refereeId: '7', rpeScore: 9, date: '2025-07-28' },
+  { id: 'rpe27', sessionId: 's10', refereeId: '5', rpeScore: 7, date: '2025-07-28' },
+];

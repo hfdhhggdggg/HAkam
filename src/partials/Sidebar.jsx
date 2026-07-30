@@ -204,6 +204,11 @@ function Sidebar({
                               <span className={spanClass}>بروفايل حكم</span>
                             </NavLink>
                           </li>
+                          <li className="mb-1 last:mb-0">
+                            <NavLink end to="/training/groups" className={linkClass}>
+                              <span className={spanClass}>المجموعات التدريبية</span>
+                            </NavLink>
+                          </li>
                         </ul>
                       </div>
                     </React.Fragment>

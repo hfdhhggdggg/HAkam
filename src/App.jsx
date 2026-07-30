@@ -21,11 +21,8 @@ import FitnessList from './pages/FitnessList';
 import Messages from './pages/Messages';
 import NotFound from './pages/NotFound';
 import StatsPage from './pages/StatsPage';
-import RefereesTabs from './pages/RefereesTabs';
-import RefereesTiles from './pages/RefereesTiles';
-import FitnessKanban from './pages/FitnessKanban';
-import FitnessList from './pages/FitnessList';
-import Messages from './pages/Messages';
+import Calendar from './pages/Calendar';
+import TrainingGroups from './pages/TrainingGroups';
 import { useAuth } from './utils/AuthContext';
 
 function ProtectedRoute({ children, roles }) {
@@ -74,6 +71,12 @@ function App() {
         <Route
           path="/inbox"
           element={
+            <ProtectedRoute roles={['admin']}>
+              <RegistrationRequests />
+            </ProtectedRoute>
+          }
+        />
+        <Route
           path="/dashboard/stats"
           element={
             <ProtectedRoute roles={['admin', 'trainer']}>
@@ -122,57 +125,26 @@ function App() {
           }
         />
         <Route
-            <ProtectedRoute roles={['admin']}>
-              <RegistrationRequests />
+          path="/calendar"
+          element={
+            <ProtectedRoute roles={['admin', 'trainer']}>
+              <Calendar />
             </ProtectedRoute>
           }
         />
         <Route
-          path="/dashboard/stats"
+          path="/training/groups"
           element={
-        <Route path="*" element={<NotFound />} />
+            <ProtectedRoute roles={['admin', 'trainer']}>
+              <TrainingGroups />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/stats-page"
+          element={
             <ProtectedRoute roles={['admin']}>
               <StatsPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/referees/tabs"
-          element={
-            <ProtectedRoute roles={['admin']}>
-              <RefereesTabs />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/referees/tiles"
-          element={
-            <ProtectedRoute roles={['admin']}>
-              <RefereesTiles />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/tasks/kanban"
-          element={
-            <ProtectedRoute roles={['admin']}>
-              <FitnessKanban />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/tasks/list"
-          element={
-            <ProtectedRoute roles={['admin']}>
-              <FitnessList />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/messages"
-          element={
-            <ProtectedRoute roles={['admin']}>
-              <Messages />
             </ProtectedRoute>
           }
         />
@@ -185,6 +157,7 @@ function App() {
           }
         />
         <Route path="/" element={<Navigate to="/signin" replace />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </>
   );

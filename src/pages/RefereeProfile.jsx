@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import Sidebar from '../partials/Sidebar';
 import Header from '../partials/Header';
 import { useAuth } from '../utils/AuthContext';
-import { referees, fitnessTests, rankLabels, statusLabels, testTypeLabels } from '../lib/mockData';
+import { referees, fitnessTests, rankLabels, statusLabels, testTypeLabels, trainingSessions, rpeRecords, trainingTypeLabels } from '../lib/mockData';
+import LineChart02 from '../charts/LineChart02';
 
 import Image01 from '../images/user-36-05.jpg';
 import Image02 from '../images/user-36-06.jpg';
@@ -110,6 +111,18 @@ function RefereeProfile() {
                       البيانات الشخصية
                     </button>
                   </li>
+                  <li className="me-1">
+                    <button
+                      onClick={() => setActiveTab('load')}
+                      className={`inline-flex items-center px-5 py-3 text-sm font-medium rounded-t-sm transition ${
+                        activeTab === 'load'
+                          ? 'text-violet-500 border-b-2 border-violet-500'
+                          : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'
+                      }`}
+                    >
+                      حمل التدريب
+                    </button>
+                  </li>
                 </ul>
               </div>
 
@@ -184,6 +197,77 @@ function RefereeProfile() {
                     </div>
                   </div>
                 )}
+
+                {activeTab === 'load' && (() => {
+                  const refRpe = rpeRecords.filter((r) => r.refereeId === referee.id).sort((a, b) => a.date.localeCompare(b.date));
+                  const refSessions = trainingSessions
+                    .filter((s) => s.attendance.some((a) => a.refereeId === referee.id))
+                    .sort((a, b) => b.date.localeCompare(a.date));
+                  const attended = refSessions.filter((s) => s.attendance.find((a) => a.refereeId === referee.id)?.status === 'present');
+                  const attendanceRate = refSessions.length > 0 ? Math.round((attended.length / refSessions.length) * 100) : 0;
+
+                  const last8 = refRpe.slice(-8);
+                  const chartData = {
+                    labels: last8.map((r) => r.date),
+                    datasets: [{
+                      label: 'RPE',
+                      data: last8.map((r) => r.rpeScore),
+                      borderColor: '#8b5cf6',
+                      fill: true,
+                      backgroundColor: 'rgba(139, 92, 246, 0.1)',
+                      tension: 0.4,
+                      pointBackgroundColor: '#8b5cf6',
+                      pointRadius: 4,
+                    }],
+                  };
+
+                  return (
+                    <div>
+                      <div className="mb-6">
+                        <div className="text-xs font-semibold text-gray-400 uppercase mb-1">نسبة الحضور الإجمالية</div>
+                        <div className="text-4xl font-bold text-violet-600 dark:text-violet-400">{attendanceRate}%</div>
+                      </div>
+
+                      <div className="mb-6 h-64">
+                        {last8.length > 0 ? (
+                          <LineChart02 data={chartData} width={600} height={256} />
+                        ) : (
+                          <div className="flex items-center justify-center h-full text-sm text-gray-400">لا توجد بيانات RPE لهذا الحكم</div>
+                        )}
+                      </div>
+
+                      <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-200 mb-3">آخر 5 جلسات</h3>
+                      <div className="overflow-x-auto">
+                        <table className="table-auto w-full">
+                          <thead className="text-xs font-semibold uppercase text-gray-400 dark:text-gray-500 bg-gray-50 dark:bg-gray-700/50">
+                            <tr>
+                              <th className="p-2 text-start">التاريخ</th>
+                              <th className="p-2 text-center">نوع التدريب</th>
+                              <th className="p-2 text-center">الحضور</th>
+                              <th className="p-2 text-center">RPE</th>
+                            </tr>
+                          </thead>
+                          <tbody className="text-sm divide-y divide-gray-100 dark:divide-gray-700/60">
+                            {refSessions.slice(0, 5).map((s) => {
+                              const att = s.attendance.find((a) => a.refereeId === referee.id);
+                              const rpe = rpeRecords.find((r) => r.sessionId === s.id && r.refereeId === referee.id);
+                              const statusLabel = att?.status === 'present' ? 'حضر' : att?.status === 'absent' ? 'غاب' : 'اعتذر';
+                              const statusColor = att?.status === 'present' ? 'text-green-500' : att?.status === 'absent' ? 'text-red-500' : 'text-amber-500';
+                              return (
+                                <tr key={s.id}>
+                                  <td className="p-2 text-start text-gray-800 dark:text-gray-100">{s.date}</td>
+                                  <td className="p-2 text-center text-gray-600 dark:text-gray-400">{trainingTypeLabels[s.type]}</td>
+                                  <td className={`p-2 text-center font-medium ${statusColor}`}>{statusLabel}</td>
+                                  <td className="p-2 text-center text-gray-600 dark:text-gray-400">{rpe?.rpeScore ?? '-'}</td>
+                                </tr>
+                              );
+                            })}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  );
+                })()}
               </div>
             </div>
           </div>
