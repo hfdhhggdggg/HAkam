@@ -14,7 +14,7 @@ function SignIn() {
 
   const validateNationalId = (value) => {
     if (!value) return 'الرقم القومي مطلوب';
-    if (!/^\d+$/.test(value)) return 'الرقم القومي يجب أن يكون أرقام فقط';
+    if (value !== 'admin' && !/^\d+$/.test(value)) return 'الرقم القومي يجب أن يكون أرقام فقط';
     if (value.length !== 14 && value !== 'admin') return 'الرقم القومي يجب أن يكون 14 رقم';
     return '';
   };
