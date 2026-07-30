@@ -1,92 +1,17 @@
 import React, { useState } from 'react';
-import {
-  DndContext,
-  DragOverlay,
-  PointerSensor,
-  useSensor,
-  useSensors,
-  useDraggable,
-  useDroppable,
-} from '@dnd-kit/core';
 import Sidebar from '../partials/Sidebar';
 import Header from '../partials/Header';
-import { kanbanTests, kanbanStatuses, rankLabels, testTypeShort } from '../lib/mockData';
+import { fitnessTests, referees, testTypeLabels } from '../lib/mockData';
 
-const columnColors = {
-  blue: { bg: 'bg-blue-500/10', text: 'text-blue-600 dark:text-blue-400', dot: 'bg-blue-500' },
-  amber: { bg: 'bg-amber-500/10', text: 'text-amber-600 dark:text-amber-400', dot: 'bg-amber-500' },
-  violet: { bg: 'bg-violet-500/10', text: 'text-violet-600 dark:text-violet-400', dot: 'bg-violet-500' },
-  green: { bg: 'bg-green-500/10', text: 'text-green-600 dark:text-green-400', dot: 'bg-green-500' },
-};
-
-function KanbanCard({ test, onDragStart }) {
-  const { attributes, listeners, setNodeRef, isDragging } = useDraggable({ id: test.id });
-  return (
-    <div
-      ref={setNodeRef}
-      {...attributes}
-      {...listeners}
-      className={`bg-white dark:bg-gray-800 rounded-lg p-3 shadow-sm border border-gray-100 dark:border-gray-700/60 cursor-grab active:cursor-grabbing transition-opacity ${isDragging ? 'opacity-30' : ''}`}
-    >
-      <div className="flex items-center justify-between mb-2">
-        <span className="text-sm font-medium text-gray-800 dark:text-gray-100">{test.refereeName}</span>
-        <span className={`text-xs px-2 py-0.5 rounded-full ${test.testType === 'interval' ? 'bg-violet-500/10 text-violet-600 dark:text-violet-400' : 'bg-pink-500/10 text-pink-600 dark:text-pink-400'}`}>
-          {testTypeShort[test.testType]}
-        </span>
-      </div>
-      <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
-        <span>{rankLabels[test.rank]}</span>
-        <span>{test.testDate}</span>
-      </div>
-    </div>
-  );
-}
-
-function KanbanColumn({ status, tests, onDragStart }) {
-  const { setNodeRef, isOver } = useDroppable({ id: status.id });
-  const colors = columnColors[status.color];
-  return (
-    <div className="flex flex-col gap-3 min-w-0">
-      <div className="flex items-center gap-2 px-1">
-        <span className={`w-2 h-2 rounded-full ${colors.dot}`}></span>
-        <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-200">{status.label}</h3>
-        <span className="text-xs text-gray-400 dark:text-gray-500">({tests.length})</span>
-      </div>
-      <div
-        ref={setNodeRef}
-        className={`flex flex-col gap-3 p-3 rounded-xl min-h-[200px] transition-colors ${isOver ? 'bg-violet-500/5' : 'bg-gray-50 dark:bg-gray-700/30'}`}
-      >
-        {tests.map((test) => (
-          <KanbanCard key={test.id} test={test} onDragStart={onDragStart} />
-        ))}
-        {tests.length === 0 && (
-          <div className="text-center text-xs text-gray-400 dark:text-gray-500 py-8">لا توجد اختبارات</div>
-        )}
-      </div>
-    </div>
-  );
-}
+const columns = [
+  { key: 'pass', label: 'ناجح', color: 'border-green-500' },
+  { key: 'fail', label: 'راسب', color: 'border-red-500' },
+];
 
 function FitnessKanban() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [tests, setTests] = useState(kanbanTests);
-  const [activeId, setActiveId] = useState(null);
 
-  const sensors = useSensors(
-    useSensor(PointerSensor, { activationConstraint: { distance: 8 } })
-  );
-
-  const handleDragStart = (event) => setActiveId(event.active.id);
-
-  const handleDragEnd = (event) => {
-    setActiveId(null);
-    const { active, over } = event;
-    if (!over) return;
-    const newStatus = over.id;
-    setTests((prev) => prev.map((t) => t.id === active.id ? { ...t, status: newStatus } : t));
-  };
-
-  const activeTest = tests.find((t) => t.id === activeId);
+  const refName = (id) => referees.find((r) => r.id === id)?.name || '-';
 
   return (
     <div className="flex h-screen overflow-hidden">
@@ -97,42 +22,44 @@ function FitnessKanban() {
           <div className="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
             <div className="mb-8">
               <h1 className="text-2xl md:text-3xl text-gray-800 dark:text-gray-100 font-bold">اختبارات اللياقة</h1>
-              <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">اسحب البطاقات بين الأعمدة لتغيير الحالة</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">عرض Kanban لنتائج الاختبارات</p>
             </div>
 
-            <DndContext
-              sensors={sensors}
-              onDragStart={handleDragStart}
-              onDragEnd={handleDragEnd}
-            >
-              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
-                {kanbanStatuses.map((status) => (
-                  <KanbanColumn
-                    key={status.id}
-                    status={status}
-                    tests={tests.filter((t) => t.status === status.id)}
-                    onDragStart={handleDragStart}
-                  />
-                ))}
-              </div>
-
-              <DragOverlay>
-                {activeTest ? (
-                  <div className="bg-white dark:bg-gray-800 rounded-lg p-3 shadow-lg border border-gray-100 dark:border-gray-700/60 opacity-90 rotate-2">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm font-medium text-gray-800 dark:text-gray-100">{activeTest.refereeName}</span>
-                      <span className={`text-xs px-2 py-0.5 rounded-full ${activeTest.testType === 'interval' ? 'bg-violet-500/10 text-violet-600 dark:text-violet-400' : 'bg-pink-500/10 text-pink-600 dark:text-pink-400'}`}>
-                        {testTypeShort[activeTest.testType]}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {columns.map((col) => {
+                const items = fitnessTests.filter((t) => t.result === col.key);
+                return (
+                  <div key={col.key} className={`bg-white dark:bg-gray-800 shadow-xs rounded-xl border-t-4 ${col.color}`}>
+                    <header className="px-5 py-4 border-b border-gray-100 dark:border-gray-700/60 flex items-center justify-between">
+                      <h2 className="font-semibold text-gray-800 dark:text-gray-100">{col.label}</h2>
+                      <span className="inline-flex items-center justify-center min-w-[24px] h-6 px-2 text-xs font-semibold text-white bg-gray-400 dark:bg-gray-600 rounded-full">
+                        {items.length}
                       </span>
-                    </div>
-                    <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
-                      <span>{rankLabels[activeTest.rank]}</span>
-                      <span>{activeTest.testDate}</span>
+                    </header>
+                    <div className="p-4 space-y-3">
+                      {items.map((t) => (
+                        <div key={t.id} className="bg-gray-50 dark:bg-gray-700/40 rounded-lg p-3">
+                          <div className="flex justify-between items-start mb-2">
+                            <span className="font-medium text-gray-800 dark:text-gray-100 text-sm">{refName(t.refereeId)}</span>
+                            <span className="text-xs text-gray-500 dark:text-gray-400">{t.testDate}</span>
+                          </div>
+                          <div className="text-xs text-gray-500 dark:text-gray-400 space-y-1">
+                            <div>النوع: {testTypeLabels[t.testType]}</div>
+                            <div>الموسم: {t.season}</div>
+                            {t.runTime && <div>زمن الجري: {t.runTime}</div>}
+                            {t.walkTime && <div>زمن المشي: {t.walkTime}</div>}
+                            {t.failureReason && <div className="text-red-500">السبب: {t.failureReason}</div>}
+                          </div>
+                        </div>
+                      ))}
+                      {items.length === 0 && (
+                        <p className="text-center text-gray-400 dark:text-gray-500 text-sm py-6">لا توجد اختبارات</p>
+                      )}
                     </div>
                   </div>
-                ) : null}
-              </DragOverlay>
-            </DndContext>
+                );
+              })}
+            </div>
           </div>
         </main>
       </div>

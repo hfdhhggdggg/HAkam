@@ -13,6 +13,13 @@ import RefereeProfile from './pages/RefereeProfile';
 import ForgotPassword from './pages/ForgotPassword';
 import TrainerDashboard from './pages/TrainerDashboard';
 import RegistrationRequests from './pages/RegistrationRequests';
+import Stats from './pages/Stats';
+import RefereesTabs from './pages/RefereesTabs';
+import RefereesTiles from './pages/RefereesTiles';
+import FitnessKanban from './pages/FitnessKanban';
+import FitnessList from './pages/FitnessList';
+import Messages from './pages/Messages';
+import NotFound from './pages/NotFound';
 import StatsPage from './pages/StatsPage';
 import RefereesTabs from './pages/RefereesTabs';
 import RefereesTiles from './pages/RefereesTiles';
@@ -67,6 +74,54 @@ function App() {
         <Route
           path="/inbox"
           element={
+          path="/dashboard/stats"
+          element={
+            <ProtectedRoute roles={['admin', 'trainer']}>
+              <Stats />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/referees/tabs"
+          element={
+            <ProtectedRoute roles={['admin', 'trainer']}>
+              <RefereesTabs />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/referees/tiles"
+          element={
+            <ProtectedRoute roles={['admin', 'trainer']}>
+              <RefereesTiles />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/tasks/kanban"
+          element={
+            <ProtectedRoute roles={['admin', 'trainer']}>
+              <FitnessKanban />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/tasks/list"
+          element={
+            <ProtectedRoute roles={['admin', 'trainer']}>
+              <FitnessList />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/messages"
+          element={
+            <ProtectedRoute roles={['admin', 'trainer']}>
+              <Messages />
+            </ProtectedRoute>
+          }
+        />
+        <Route
             <ProtectedRoute roles={['admin']}>
               <RegistrationRequests />
             </ProtectedRoute>
@@ -75,6 +130,7 @@ function App() {
         <Route
           path="/dashboard/stats"
           element={
+        <Route path="*" element={<NotFound />} />
             <ProtectedRoute roles={['admin']}>
               <StatsPage />
             </ProtectedRoute>

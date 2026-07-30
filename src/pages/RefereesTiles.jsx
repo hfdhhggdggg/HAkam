@@ -1,43 +1,32 @@
-import React, { useState, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
 import Sidebar from '../partials/Sidebar';
 import Header from '../partials/Header';
-import { referees, rankLabels } from '../lib/mockData';
+import { referees, rankLabels, statusLabels, governorates } from '../lib/mockData';
 
-const tabs = [
-  { id: 'all', label: 'الكل' },
-  { id: 'international', label: 'دولي' },
-  { id: 'first', label: 'درجة أولى' },
-  { id: 'second', label: 'درجة ثانية' },
-];
+import Image01 from '../images/user-36-05.jpg';
+import Image02 from '../images/user-36-06.jpg';
+import Image03 from '../images/user-36-07.jpg';
+import Image04 from '../images/user-36-08.jpg';
+import Image05 from '../images/user-36-09.jpg';
 
-const statusPills = {
-  active: { label: 'نشط', className: 'bg-green-500/10 text-green-600 dark:text-green-400' },
-  inactive: { label: 'غير نشط', className: 'bg-gray-500/10 text-gray-500 dark:text-gray-400' },
-  pending: { label: 'معلّق', className: 'bg-amber-500/10 text-amber-600 dark:text-amber-400' },
+const avatarMap = [Image01, Image02, Image03, Image04, Image05];
+
+const statusColor = (status) => {
+  if (status === 'active') return 'bg-green-100 text-green-700 dark:bg-green-500/15 dark:text-green-400';
+  if (status === 'suspended') return 'bg-red-100 text-red-700 dark:bg-red-500/15 dark:text-red-400';
+  return 'bg-amber-100 text-amber-700 dark:bg-amber-500/15 dark:text-amber-400';
 };
-
-const defaultAvatar = (
-  <svg className="w-16 h-16 text-gray-400 dark:text-gray-500" fill="currentColor" viewBox="0 0 20 20">
-    <path d="M10 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm-7 9a7 7 0 1 1 14 0H3Z" />
-  </svg>
-);
 
 function RefereesTiles() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState('all');
   const [search, setSearch] = useState('');
-  const navigate = useNavigate();
+  const [govFilter, setGovFilter] = useState('all');
 
-  const filteredReferees = useMemo(() => {
-    return referees.filter((r) => {
-      const matchesTab = activeTab === 'all' || r.rank === activeTab;
-      const matchesSearch = !search ||
-        r.fullName.includes(search) ||
-        r.nationalId.includes(search);
-      return matchesTab && matchesSearch;
-    });
-  }, [activeTab, search]);
+  const filtered = referees.filter((r) => {
+    if (govFilter !== 'all' && r.governorate !== govFilter) return false;
+    if (search && !r.name.includes(search) && !r.nationalId.includes(search)) return false;
+    return true;
+  });
 
   return (
     <div className="flex h-screen overflow-hidden">
@@ -48,68 +37,70 @@ function RefereesTiles() {
           <div className="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
             <div className="mb-8">
               <h1 className="text-2xl md:text-3xl text-gray-800 dark:text-gray-100 font-bold">قائمة الحكام</h1>
-              <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{filteredReferees.length} حكم</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">عرض الحكام كبطاقات</p>
             </div>
 
-            {/* Tabs + Search */}
-            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 gap-4">
-              <div className="flex flex-wrap gap-1 bg-gray-100 dark:bg-gray-700/50 rounded-lg p-1">
-                {tabs.map((tab) => (
-                  <button
-                    key={tab.id}
-                    onClick={() => setActiveTab(tab.id)}
-                    className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                      activeTab === tab.id
-                        ? 'bg-white dark:bg-gray-800 text-violet-600 dark:text-violet-400 shadow-sm'
-                        : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'
-                    }`}
-                  >
-                    {tab.label}
-                  </button>
+            {/* Filters */}
+            <div className="flex flex-col sm:flex-row gap-3 mb-6">
+              <input
+                type="text"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="بحث بالاسم أو الرقم القومي…"
+                className="form-input flex-1"
+              />
+              <select
+                value={govFilter}
+                onChange={(e) => setGovFilter(e.target.value)}
+                className="form-select sm:w-48"
+              >
+                <option value="all">كل المحافظات</option>
+                {governorates.map((g) => (
+                  <option key={g} value={g}>{g}</option>
                 ))}
-              </div>
-
-              <div className="relative">
-                <svg className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
-                </svg>
-                <input
-                  type="text"
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                  placeholder="بحث بالاسم أو الرقم القومي…"
-                  className="form-input w-full sm:w-72 pr-10"
-                />
-              </div>
+              </select>
             </div>
 
-            {/* Grid */}
-            {filteredReferees.length === 0 ? (
-              <div className="bg-white dark:bg-gray-800 shadow-xs rounded-xl p-12 text-center">
-                <p className="text-gray-500 dark:text-gray-400">لا توجد نتائج مطابقة</p>
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-                {filteredReferees.map((ref) => (
-                  <div key={ref.id} className="bg-white dark:bg-gray-800 shadow-xs rounded-xl p-5 flex flex-col items-center text-center">
-                    <div className="w-16 h-16 rounded-full bg-gray-100 dark:bg-gray-700/50 flex items-center justify-center shrink-0 overflow-hidden mb-3">
-                      {defaultAvatar}
+            {/* Tiles */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+              {filtered.map((referee, i) => (
+                <div key={referee.id} className="bg-white dark:bg-gray-800 shadow-xs rounded-xl p-5">
+                  <div className="flex items-center mb-4">
+                    <div className="w-12 h-12 shrink-0 me-3">
+                      <img className="rounded-full" src={avatarMap[i % avatarMap.length]} width="48" height="48" alt={referee.name} />
                     </div>
-                    <h3 className="font-semibold text-gray-800 dark:text-gray-100 mb-1">{ref.fullName}</h3>
-                    <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">{rankLabels[ref.rank]}</p>
-                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium mb-4 ${statusPills[ref.status]?.className || statusPills.inactive.className}`}>
-                      {statusPills[ref.status]?.label || ref.status}
-                    </span>
-                    <button
-                      onClick={() => navigate('/profile')}
-                      className="w-full px-3 py-2 rounded-lg bg-violet-50 dark:bg-violet-500/10 text-violet-600 dark:text-violet-400 hover:bg-violet-100 dark:hover:bg-violet-500/20 text-sm font-medium transition-colors"
-                    >
-                      عرض الملف
-                    </button>
+                    <div className="min-w-0">
+                      <h3 className="font-semibold text-gray-800 dark:text-gray-100 truncate">{referee.name}</h3>
+                      <p className="text-xs text-gray-500 dark:text-gray-400 font-mono" dir="ltr">{referee.nationalId}</p>
+                    </div>
                   </div>
-                ))}
-              </div>
-            )}
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span className="text-gray-500 dark:text-gray-400">الرتبة</span>
+                      <span className="font-medium text-gray-800 dark:text-gray-100">{rankLabels[referee.rank]}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-500 dark:text-gray-400">المحافظة</span>
+                      <span className="font-medium text-gray-800 dark:text-gray-100">{referee.governorate}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-500 dark:text-gray-400">آخر اختبار</span>
+                      <span className="font-medium text-gray-800 dark:text-gray-100">{referee.lastTest}</span>
+                    </div>
+                  </div>
+                  <div className="mt-4">
+                    <span className={`inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium ${statusColor(referee.status)}`}>
+                      {statusLabels[referee.status]}
+                    </span>
+                  </div>
+                </div>
+              ))}
+              {filtered.length === 0 && (
+                <div className="col-span-full bg-white dark:bg-gray-800 shadow-xs rounded-xl p-12 text-center text-gray-400 dark:text-gray-500">
+                  لا يوجد حكام مطابقون
+                </div>
+              )}
+            </div>
           </div>
         </main>
       </div>
