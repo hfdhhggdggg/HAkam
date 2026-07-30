@@ -13,6 +13,12 @@ import RefereeProfile from './pages/RefereeProfile';
 import ForgotPassword from './pages/ForgotPassword';
 import TrainerDashboard from './pages/TrainerDashboard';
 import RegistrationRequests from './pages/RegistrationRequests';
+import StatsPage from './pages/StatsPage';
+import RefereesTabs from './pages/RefereesTabs';
+import RefereesTiles from './pages/RefereesTiles';
+import FitnessKanban from './pages/FitnessKanban';
+import FitnessList from './pages/FitnessList';
+import Messages from './pages/Messages';
 import { useAuth } from './utils/AuthContext';
 
 function ProtectedRoute({ children, roles }) {
@@ -63,6 +69,54 @@ function App() {
           element={
             <ProtectedRoute roles={['admin']}>
               <RegistrationRequests />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/dashboard/stats"
+          element={
+            <ProtectedRoute roles={['admin']}>
+              <StatsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/referees/tabs"
+          element={
+            <ProtectedRoute roles={['admin']}>
+              <RefereesTabs />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/referees/tiles"
+          element={
+            <ProtectedRoute roles={['admin']}>
+              <RefereesTiles />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/tasks/kanban"
+          element={
+            <ProtectedRoute roles={['admin']}>
+              <FitnessKanban />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/tasks/list"
+          element={
+            <ProtectedRoute roles={['admin']}>
+              <FitnessList />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/messages"
+          element={
+            <ProtectedRoute roles={['admin']}>
+              <Messages />
             </ProtectedRoute>
           }
         />

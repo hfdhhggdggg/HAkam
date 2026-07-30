@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 
 import SidebarLinkGroup from "./SidebarLinkGroup";
-import { registrationRequests } from "../lib/mockData";
+import { registrationRequests, conversations } from "../lib/mockData";
 
 function Sidebar({
   sidebarOpen,
@@ -282,7 +282,11 @@ function Sidebar({
                       </span>
                     </div>
                     <div className="flex shrink-0 ms-2">
-                      <span className="inline-flex items-center justify-center h-5 text-xs font-medium text-white bg-violet-400 px-2 rounded-sm">4</span>
+                      {conversations.filter((c) => c.unread).length > 0 && (
+                        <span className="inline-flex items-center justify-center h-5 text-xs font-medium text-white bg-violet-400 px-2 rounded-sm">
+                          {conversations.filter((c) => c.unread).length}
+                        </span>
+                      )}
                     </div>
                   </div>
                 </NavLink>

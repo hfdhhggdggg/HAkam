@@ -47,8 +47,14 @@ export const fitnessTests = [
 ];
 
 export const testTypeLabels = {
-  interval: 'RSA (Interval)',
+  interval: 'الفواصل الزمنية (Interval)',
+  rsa: 'السرعة المتكررة (RSA)',
   endurance: 'تحمل',
+};
+
+export const testTypeShort = {
+  interval: 'Interval',
+  rsa: 'RSA',
 };
 
 export const registrationRequests = [
@@ -104,3 +110,143 @@ export const fitnessOverSeasons = [
   { season: '2023-2024', current: 48, previous: 42, average: 45 },
   { season: '2024-2025', current: 38, previous: 48, average: 43 },
 ];
+
+// Stats page data
+export const seasons = ['2020-2021', '2021-2022', '2022-2023', '2023-2024', '2024-2025'];
+
+export const passRateByRankOverSeasons = [
+  { season: '2020-2021', international: 90, first: 85, second: 70 },
+  { season: '2021-2022', international: 92, first: 82, second: 75 },
+  { season: '2022-2023', international: 95, first: 88, second: 72 },
+  { season: '2023-2024', international: 93, first: 86, second: 78 },
+  { season: '2024-2025', international: 96, first: 84, second: 68 },
+];
+
+export const passRateIntervalVsRsa = [
+  { season: '2020-2021', interval: 88, rsa: 80 },
+  { season: '2021-2022', interval: 90, rsa: 82 },
+  { season: '2022-2023', interval: 85, rsa: 79 },
+  { season: '2023-2024', interval: 87, rsa: 84 },
+  { season: '2024-2025', interval: 82, rsa: 81 },
+];
+
+export const failureReasonsDetailed = [
+  { reason: 'تأخر جري', count: 18, percentage: 38.3 },
+  { reason: 'تأخر مشي', count: 12, percentage: 25.5 },
+  { reason: 'عدم استكمال الاختبار', count: 8, percentage: 17.0 },
+  { reason: 'إصابة أثناء الاختبار', count: 5, percentage: 10.6 },
+  { reason: 'تأخر دخول منطقة المشي', count: 4, percentage: 8.6 },
+];
+
+export const refereeCountByGovernorateFull = [
+  { governorate: 'القاهرة', count: 14 },
+  { governorate: 'الإسكندرية', count: 9 },
+  { governorate: 'الجيزة', count: 7 },
+  { governorate: 'المنوفية', count: 5 },
+  { governorate: 'الغربية', count: 5 },
+  { governorate: 'الشرقية', count: 4 },
+  { governorate: 'الدقهلية', count: 4 },
+  { governorate: 'أسيوط', count: 3 },
+  { governorate: 'بني سويف', count: 3 },
+  { governorate: 'قنا', count: 2 },
+];
+
+// Kanban test data
+export const kanbanTests = [
+  { id: 'k1', refereeId: '1', refereeName: 'أحمد محمد علي', testType: 'interval', testDate: '2024-10-05', rank: 'international', status: 'scheduled' },
+  { id: 'k2', refereeId: '2', refereeName: 'محمود سعيد إبراهيم', testType: 'rsa', testDate: '2024-10-06', rank: 'first', status: 'scheduled' },
+  { id: 'k3', refereeId: '4', refereeName: 'عمرو شريف فؤاد', testType: 'interval', testDate: '2024-10-07', rank: 'second', status: 'in-progress' },
+  { id: 'k4', refereeId: '5', refereeName: 'ياسر إبراهيم منصور', testType: 'rsa', testDate: '2024-10-07', rank: 'second', status: 'in-progress' },
+  { id: 'k5', refereeId: '6', refereeName: 'هاني عادل سمير', testType: 'interval', testDate: '2024-10-04', rank: 'international', status: 'awaiting-result' },
+  { id: 'k6', refereeId: '8', refereeName: 'وليد رفعت لبيب', testType: 'rsa', testDate: '2024-10-03', rank: 'second', status: 'awaiting-result' },
+  { id: 'k7', refereeId: '3', refereeName: 'كريم حسن عبد الله', testType: 'interval', testDate: '2024-09-15', rank: 'first', status: 'completed' },
+  { id: 'k8', refereeId: '7', refereeName: 'طارق جمال الدين', testType: 'rsa', testDate: '2024-09-12', rank: 'first', status: 'completed' },
+  { id: 'k9', refereeId: '1', refereeName: 'أحمد محمد علي', testType: 'rsa', testDate: '2024-09-10', rank: 'international', status: 'completed' },
+];
+
+export const kanbanStatuses = [
+  { id: 'scheduled', label: 'مجدول', color: 'blue' },
+  { id: 'in-progress', label: 'جاري التنفيذ', color: 'amber' },
+  { id: 'awaiting-result', label: 'بانتظار إدخال النتيجة', color: 'violet' },
+  { id: 'completed', label: 'مكتمل', color: 'green' },
+];
+
+// Messages data
+export const conversations = [
+  {
+    id: 'c1',
+    refereeId: '1',
+    name: 'أحمد محمد علي',
+    avatar: '/src/images/user-36-05.jpg',
+    unread: true,
+    messages: [
+      { id: 'm1', sender: 'them', text: 'السلام عليكم، عايز أسأل عن موعد اختبار اللياقة القادم', time: '10:30 ص' },
+      { id: 'm2', sender: 'me', text: 'وعليكم السلام، الموعد يوم 5 أكتوبر القادم', time: '10:32 ص' },
+      { id: 'm3', sender: 'them', text: 'شكراً، هل هناك أي استعدادات مطلوبة؟', time: '10:33 ص' },
+      { id: 'm4', sender: 'me', text: 'نعم، يرجى الالتزام ببرنامج التدريب المرسل مسبقاً', time: '10:35 ص' },
+    ],
+  },
+  {
+    id: 'c2',
+    refereeId: '2',
+    name: 'محمود سعيد إبراهيم',
+    avatar: '/src/images/user-36-06.jpg',
+    unread: true,
+    messages: [
+      { id: 'm5', sender: 'them', text: 'تحية طيبة، عندي إصابة بسيطة في الركبة', time: '09:15 ص' },
+      { id: 'm6', sender: 'me', text: 'هل تم عرضها على الطبيب؟', time: '09:20 ص' },
+      { id: 'm7', sender: 'them', text: 'نعم، الطبيب نصحني بالراحة 3 أيام', time: '09:22 ص' },
+    ],
+  },
+  {
+    id: 'c3',
+    refereeId: '4',
+    name: 'عمرو شريف فؤاد',
+    avatar: '/src/images/user-36-08.jpg',
+    unread: false,
+    messages: [
+      { id: 'm8', sender: 'them', text: 'ممكن أعرف نتيجة اختباري الأخير؟', time: '08:00 ص' },
+      { id: 'm9', sender: 'me', text: 'النتيجة ناجح، سيتم إرسال التفاصيل عبر الإيميل', time: '08:05 ص' },
+      { id: 'm10', sender: 'them', text: 'شكراً جزيلاً', time: '08:06 ص' },
+    ],
+  },
+  {
+    id: 'c4',
+    refereeId: '6',
+    name: 'هاني عادل سمير',
+    avatar: '/src/images/user-36-05.jpg',
+    unread: true,
+    messages: [
+      { id: 'm11', sender: 'them', text: 'متى يتوفر جدول المباريات الجديد؟', time: '11:00 ص' },
+      { id: 'm12', sender: 'me', text: 'سيتم نشره الأسبوع القادم', time: '11:02 ص' },
+      { id: 'm13', sender: 'them', text: 'تمام، في انتظاره', time: '11:03 ص' },
+    ],
+  },
+];
+
+// Test result records for the List page
+export const testResults = [
+  { id: 'tr1', refereeId: '1', refereeName: 'أحمد محمد علي', testType: 'interval', season: '2024-2025', result: 'pass', failureReason: null, testDate: '2024-09-15' },
+  { id: 'tr2', refereeId: '1', refereeName: 'أحمد محمد علي', testType: 'rsa', season: '2024-2025', result: 'pass', failureReason: null, testDate: '2024-09-10' },
+  { id: 'tr3', refereeId: '2', refereeName: 'محمود سعيد إبراهيم', testType: 'interval', season: '2024-2025', result: 'pass', failureReason: null, testDate: '2024-08-22' },
+  { id: 'tr4', refereeId: '3', refereeName: 'كريم حسن عبد الله', testType: 'interval', season: '2024-2025', result: 'fail', failureReason: 'تأخر جري', testDate: '2024-07-10' },
+  { id: 'tr5', refereeId: '4', refereeName: 'عمرو شريف فؤاد', testType: 'rsa', season: '2024-2025', result: 'pass', failureReason: null, testDate: '2024-09-01' },
+  { id: 'tr6', refereeId: '5', refereeName: 'ياسر إبراهيم منصور', testType: 'interval', season: '2024-2025', result: 'pass', failureReason: null, testDate: '2024-08-30' },
+  { id: 'tr7', refereeId: '6', refereeName: 'هاني عادل سمير', testType: 'interval', season: '2024-2025', result: 'pass', failureReason: null, testDate: '2024-09-20' },
+  { id: 'tr8', refereeId: '7', refereeName: 'طارق جمال الدين', testType: 'rsa', season: '2024-2025', result: 'fail', failureReason: 'عدم استكمال الاختبار', testDate: '2024-06-15' },
+  { id: 'tr9', refereeId: '8', refereeName: 'وليد رفعت لبيب', testType: 'interval', season: '2024-2025', result: 'pass', failureReason: null, testDate: '2024-09-05' },
+  { id: 'tr10', refereeId: '2', refereeName: 'محمود سعيد إبراهيم', testType: 'rsa', season: '2023-2024', result: 'pass', failureReason: null, testDate: '2023-10-15' },
+  { id: 'tr11', refereeId: '3', refereeName: 'كريم حسن عبد الله', testType: 'interval', season: '2023-2024', result: 'fail', failureReason: 'تأخر مشي', testDate: '2023-09-20' },
+  { id: 'tr12', refereeId: '5', refereeName: 'ياسر إبراهيم منصور', testType: 'rsa', season: '2023-2024', result: 'pass', failureReason: null, testDate: '2023-08-10' },
+];
+
+// Interval test protocol thresholds (configurable per rank)
+export const intervalTestThresholds = {
+  international: { runLimit: 15, walkLimit: 18 },
+  first: { runLimit: 15, walkLimit: 18 },
+  second: { runLimit: 17, walkLimit: 20 },
+  lower: { runLimit: 18, walkLimit: 22 },
+};
+
+// RSA test default threshold (editable in settings, pending federation confirmation)
+export const rsaTestThreshold = 6.0;
