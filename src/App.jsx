@@ -12,6 +12,7 @@ import PendingReview from './pages/PendingReview';
 import RefereeProfile from './pages/RefereeProfile';
 import ForgotPassword from './pages/ForgotPassword';
 import TrainerDashboard from './pages/TrainerDashboard';
+import RegistrationRequests from './pages/RegistrationRequests';
 import { useAuth } from './utils/AuthContext';
 
 function ProtectedRoute({ children, roles }) {
@@ -54,6 +55,14 @@ function App() {
           element={
             <ProtectedRoute roles={['trainer']}>
               <TrainerDashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/inbox"
+          element={
+            <ProtectedRoute roles={['admin']}>
+              <RegistrationRequests />
             </ProtectedRoute>
           }
         />

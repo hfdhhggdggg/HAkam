@@ -8,7 +8,7 @@ import {
 import 'chartjs-adapter-moment';
 
 // Import utilities
-import { formatValue } from '../utils/Utils';
+import { formatValue, formatNumber } from '../utils/Utils';
 
 Chart.register(BarController, BarElement, LinearScale, TimeScale, Tooltip, Legend);
 
@@ -47,7 +47,7 @@ function BarChart01({
             },
             ticks: {
               maxTicksLimit: 5,
-              callback: (value) => formatValue(value),
+              callback: (value) => formatNumber(value),
               color: darkMode ? textColor.dark : textColor.light,
             },
             grid: {
@@ -81,7 +81,7 @@ function BarChart01({
           tooltip: {
             callbacks: {
               title: () => false, // Disable tooltip title
-              label: (context) => formatValue(context.parsed.y),
+              label: (context) => formatNumber(context.parsed.y),
             },
             bodyColor: darkMode ? tooltipBodyColor.dark : tooltipBodyColor.light,
             backgroundColor: darkMode ? tooltipBgColor.dark : tooltipBgColor.light,
@@ -147,7 +147,7 @@ function BarChart01({
               label.style.fontSize = '14px';
               label.style.lineHeight = 'calc(1.25 / 0.875)';
               const theValue = c.data.datasets[item.datasetIndex].data.reduce((a, b) => a + b, 0);
-              const valueText = document.createTextNode(formatValue(theValue));
+              const valueText = document.createTextNode(formatNumber(theValue));
               const labelText = document.createTextNode(item.text);
               value.appendChild(valueText);
               label.appendChild(labelText);

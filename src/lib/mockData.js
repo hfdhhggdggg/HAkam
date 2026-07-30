@@ -52,9 +52,9 @@ export const testTypeLabels = {
 };
 
 export const registrationRequests = [
-  { id: 'r1', nationalId: '29501019988776', fullName: 'سامح فتحي علي', rank: 'second', governorate: 'الدقهلية', status: 'pending', createdAt: '2024-09-25' },
-  { id: 'r2', nationalId: '29403025566778', fullName: 'إسلام نبيل سعد', rank: 'first', governorate: 'بني سويف', status: 'pending', createdAt: '2024-09-24' },
-  { id: 'r3', nationalId: '29607083344556', fullName: 'رامي أشرف زكي', rank: 'second', governorate: 'قنا', status: 'pending', createdAt: '2024-09-23' },
+  { id: 'r1', nationalId: '29501019988776', fullName: 'سامح فتحي علي', rank: 'second', governorate: 'الدقهلية', status: 'pending', phone: '01012349988', createdAt: '2024-09-25' },
+  { id: 'r2', nationalId: '29403025566778', fullName: 'إسلام نبيل سعد', rank: 'first', governorate: 'بني سويف', status: 'pending', phone: '01156789001', createdAt: '2024-09-24' },
+  { id: 'r3', nationalId: '29607083344556', fullName: 'رامي أشرف زكي', rank: 'second', governorate: 'قنا', status: 'pending', phone: '01267890011', createdAt: '2024-09-23' },
 ];
 
 export const activities = [

@@ -5,6 +5,10 @@ export const formatValue = (value) => Intl.NumberFormat('en-US', {
   notation: 'compact',
 }).format(value);
 
+export const formatNumber = (value) => Intl.NumberFormat('en-US', {
+  maximumFractionDigits: 0,
+}).format(value);
+
 export const formatThousands = (value) => Intl.NumberFormat('en-US', {
   maximumSignificantDigits: 3,
   notation: 'compact',
