@@ -26,6 +26,12 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - run: npm ci
-    - run: npm run build --if-present
-    - run: npm test
+        cache-dependency-path: package-lock.json
+    - name: Install dependencies
+      run: npm ci
+    - name: Rebuild native modules for current Node version
+      run: npm rebuild --update-binary
+    - name: Build
+      run: npm run build --if-present
+    - name: Test
+      run: npm test
