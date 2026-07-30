@@ -9,6 +9,17 @@ export const referees = [
   { id: '8', name: 'وليد رفعت لبيب', nationalId: '28607084455667', rank: 'second', governorate: 'الشرقية', status: 'active', lastTest: '2024-09-05', avatar: '/src/images/user-36-07.jpg' },
 ];
 
+export const physicalTrainers = [
+  { id: 'tr1', name: 'د. خالد فؤاد', nationalId: '28001015566778', assignedRefereeIds: ['1', '2', '3', '6'] },
+  { id: 'tr2', name: 'م. أمير رضا', nationalId: '28303058877665', assignedRefereeIds: ['4', '5', '7', '8'] },
+];
+
+export const roleLabels = {
+  admin: 'إدارة الاتحاد',
+  trainer: 'معد بدني',
+  referee: 'حكم',
+};
+
 export const rankLabels = {
   international: 'دولي',
   first: 'أولى',

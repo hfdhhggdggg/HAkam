@@ -44,7 +44,7 @@ function RefereeProfile() {
               <div className="h-24 bg-gradient-to-r from-violet-500 to-sky-500"></div>
               <div className="px-6 pb-6">
                 <div className="flex flex-col sm:flex-row sm:items-end -mt-12">
-                  <div className="mb-4 sm:mb-0 sm:ml-6">
+                  <div className="mb-4 sm:mb-0 sm:ms-6">
                     <div className="relative inline-block">
                       <img className="rounded-full ring-4 ring-white dark:ring-gray-800" src={avatarMap[refereeIndex % avatarMap.length]} width="96" height="96" alt={referee.name} />
                     </div>
@@ -86,7 +86,7 @@ function RefereeProfile() {
             <div className="bg-white dark:bg-gray-800 shadow-xs rounded-xl">
               <div className="border-b border-gray-100 dark:border-gray-700/60">
                 <ul className="flex">
-                  <li className="mr-1">
+                  <li className="me-1">
                     <button
                       onClick={() => setActiveTab('tests')}
                       className={`inline-flex items-center px-5 py-3 text-sm font-medium rounded-t-sm transition ${
@@ -98,7 +98,7 @@ function RefereeProfile() {
                       اختبارات اللياقة
                     </button>
                   </li>
-                  <li className="mr-1">
+                  <li className="me-1">
                     <button
                       onClick={() => setActiveTab('info')}
                       className={`inline-flex items-center px-5 py-3 text-sm font-medium rounded-t-sm transition ${
@@ -124,7 +124,7 @@ function RefereeProfile() {
                         <table className="table-auto w-full">
                           <thead className="text-xs font-semibold uppercase text-gray-400 dark:text-gray-500 bg-gray-50 dark:bg-gray-700/50">
                             <tr>
-                              <th className="p-2 text-right">نوع الاختبار</th>
+                              <th className="p-2 text-start">نوع الاختبار</th>
                               <th className="p-2 text-center">الموسم</th>
                               <th className="p-2 text-center">زمن الجري</th>
                               <th className="p-2 text-center">زمن المشي</th>
@@ -136,7 +136,7 @@ function RefereeProfile() {
                           <tbody className="text-sm divide-y divide-gray-100 dark:divide-gray-700/60">
                             {tests.map((t) => (
                               <tr key={t.id}>
-                                <td className="p-2 text-right text-gray-800 dark:text-gray-100">{testTypeLabels[t.testType]}</td>
+                                <td className="p-2 text-start text-gray-800 dark:text-gray-100">{testTypeLabels[t.testType]}</td>
                                 <td className="p-2 text-center text-gray-600 dark:text-gray-400">{t.season}</td>
                                 <td className="p-2 text-center text-gray-600 dark:text-gray-400">{t.runTime ?? '-'}</td>
                                 <td className="p-2 text-center text-gray-600 dark:text-gray-400">{t.walkTime ?? '-'}</td>

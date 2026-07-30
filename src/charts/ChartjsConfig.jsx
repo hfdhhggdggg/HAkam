@@ -6,8 +6,9 @@ import { adjustColorOpacity, getCssVariable } from '../utils/Utils';
 Chart.register(Tooltip);
 
 // Define Chart.js default settings
-Chart.defaults.font.family = '"Inter", sans-serif';
+Chart.defaults.font.family = '"Cairo", sans-serif';
 Chart.defaults.font.weight = 500;
+Chart.defaults.direction = 'rtl';
 Chart.defaults.plugins.tooltip.borderWidth = 1;
 Chart.defaults.plugins.tooltip.displayColors = false;
 Chart.defaults.plugins.tooltip.mode = 'nearest';

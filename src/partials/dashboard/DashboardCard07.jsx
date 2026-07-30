@@ -17,7 +17,7 @@ function DashboardCard07() {
             <thead className="text-xs uppercase text-gray-400 dark:text-gray-500 bg-gray-50 dark:bg-gray-700/50 rounded-xs">
               <tr>
                 <th className="p-2">
-                  <div className="font-semibold text-right">نوع الاختبار</div>
+                  <div className="font-semibold text-start">نوع الاختبار</div>
                 </th>
                 <th className="p-2">
                   <div className="font-semibold text-center">إجمالي</div>
@@ -38,7 +38,7 @@ function DashboardCard07() {
                 <tr key={i}>
                   <td className="p-2">
                     <div className="flex items-center">
-                      <div className={`w-9 h-9 rounded-full shrink-0 ${t.color} my-2 mr-3 flex items-center justify-center`}>
+                      <div className={`w-9 h-9 rounded-full shrink-0 ${t.color} my-2 me-3 flex items-center justify-center`}>
                         <svg className="w-5 h-5 fill-current text-white" viewBox="0 0 24 24">
                           <path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z" />
                         </svg>
@@ -51,7 +51,7 @@ function DashboardCard07() {
                   <td className="p-2"><div className="text-center text-red-500">{t.total - t.pass}</div></td>
                   <td className="p-2">
                     <div className="flex items-center justify-center">
-                      <div className="w-16 h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden ml-2">
+                      <div className="w-16 h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden ms-2">
                         <div className={`h-full ${t.color}`} style={{ width: `${t.rate}%` }}></div>
                       </div>
                       <span className="text-sky-500 text-xs">{t.rate}%</span>

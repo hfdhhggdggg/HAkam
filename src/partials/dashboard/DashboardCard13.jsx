@@ -46,7 +46,7 @@ function DashboardCard13() {
       </header>
       <div className="px-5 pt-3">
         <div className="flex items-start">
-          <div className="text-3xl font-bold text-gray-800 dark:text-gray-100 mr-2">50</div>
+          <div className="text-3xl font-bold text-gray-800 dark:text-gray-100 me-2">50</div>
           <div className="text-sm font-medium text-red-700 px-1.5 bg-red-500/20 rounded-full">-7.4%</div>
         </div>
       </div>

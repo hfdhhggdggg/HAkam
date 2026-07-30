@@ -34,7 +34,7 @@ function DashboardCard10() {
             <thead className="text-xs font-semibold uppercase text-gray-400 dark:text-gray-500 bg-gray-50 dark:bg-gray-700/50">
               <tr>
                 <th className="p-2 whitespace-nowrap">
-                  <div className="font-semibold text-right">الاسم</div>
+                  <div className="font-semibold text-start">الاسم</div>
                 </th>
                 <th className="p-2 whitespace-nowrap">
                   <div className="font-semibold text-center">الرتبة</div>
@@ -55,7 +55,7 @@ function DashboardCard10() {
                 <tr key={referee.id}>
                   <td className="p-2 whitespace-nowrap">
                     <div className="flex items-center">
-                      <div className="w-10 h-10 shrink-0 ml-2 sm:ml-3">
+                      <div className="w-10 h-10 shrink-0 ms-2 sm:ms-3">
                         <img className="rounded-full" src={referee.avatar} width="40" height="40" alt={referee.name} />
                       </div>
                       <div className="font-medium text-gray-800 dark:text-gray-100">{referee.name}</div>

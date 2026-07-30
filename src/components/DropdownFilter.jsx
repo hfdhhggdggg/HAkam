@@ -99,7 +99,7 @@ function DropdownFilter({ align }) {
                   type="checkbox"
                   className="form-checkbox"
                 />
-                <span className="text-sm font-medium ml-2">
+                <span className="text-sm font-medium ms-2">
                   Direct VS Indirect
                 </span>
               </label>
@@ -111,7 +111,7 @@ function DropdownFilter({ align }) {
                   type="checkbox"
                   className="form-checkbox"
                 />
-                <span className="text-sm font-medium ml-2">
+                <span className="text-sm font-medium ms-2">
                   Real Time Value
                 </span>
               </label>
@@ -123,7 +123,7 @@ function DropdownFilter({ align }) {
                   type="checkbox"
                   className="form-checkbox"
                 />
-                <span className="text-sm font-medium ml-2">Top Channels</span>
+                <span className="text-sm font-medium ms-2">Top Channels</span>
               </label>
             </li>
             <li className="py-1 px-3">
@@ -133,7 +133,7 @@ function DropdownFilter({ align }) {
                   type="checkbox"
                   className="form-checkbox"
                 />
-                <span className="text-sm font-medium ml-2">
+                <span className="text-sm font-medium ms-2">
                   Sales VS Refunds
                 </span>
               </label>
@@ -145,7 +145,7 @@ function DropdownFilter({ align }) {
                   type="checkbox"
                   className="form-checkbox"
                 />
-                <span className="text-sm font-medium ml-2">Last Order</span>
+                <span className="text-sm font-medium ms-2">Last Order</span>
               </label>
             </li>
             <li className="py-1 px-3">
@@ -155,7 +155,7 @@ function DropdownFilter({ align }) {
                   type="checkbox"
                   className="form-checkbox"
                 />
-                <span className="text-sm font-medium ml-2">Total Spent</span>
+                <span className="text-sm font-medium ms-2">Total Spent</span>
               </label>
             </li>
           </ul>

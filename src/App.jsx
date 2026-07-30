@@ -10,12 +10,18 @@ import Dashboard from './pages/Dashboard';
 import SignIn from './pages/SignIn';
 import PendingReview from './pages/PendingReview';
 import RefereeProfile from './pages/RefereeProfile';
+import ForgotPassword from './pages/ForgotPassword';
+import TrainerDashboard from './pages/TrainerDashboard';
 import { useAuth } from './utils/AuthContext';
 
-function ProtectedRoute({ children, requireAdmin }) {
+function ProtectedRoute({ children, roles }) {
   const { user } = useAuth();
   if (!user) return <Navigate to="/signin" replace />;
-  if (requireAdmin && user.role !== 'admin') return <Navigate to="/profile" replace />;
+  if (roles && !roles.includes(user.role)) {
+    if (user.role === 'admin') return <Navigate to="/dashboard" replace />;
+    if (user.role === 'trainer') return <Navigate to="/trainer" replace />;
+    return <Navigate to="/profile" replace />;
+  }
   return children;
 }
 
@@ -33,12 +39,21 @@ function App() {
     <>
       <Routes>
         <Route path="/signin" element={<SignIn />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/pending" element={<PendingReview />} />
         <Route
           path="/dashboard"
           element={
-            <ProtectedRoute requireAdmin>
+            <ProtectedRoute roles={['admin']}>
               <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/trainer"
+          element={
+            <ProtectedRoute roles={['trainer']}>
+              <TrainerDashboard />
             </ProtectedRoute>
           }
         />
