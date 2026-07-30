@@ -29,8 +29,8 @@ jobs:
         cache-dependency-path: package-lock.json
     - name: Install dependencies
       run: npm ci
-    - name: Rebuild native modules for current Node version
-      run: npm rebuild --update-binary
+    - name: Install missing optional native bindings
+      run: npm i --no-save
     - name: Build
       run: npm run build --if-present
     - name: Test
