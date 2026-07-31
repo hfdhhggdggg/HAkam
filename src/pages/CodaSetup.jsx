@@ -3,8 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Sidebar from '../partials/Sidebar';
 import Header from '../partials/Header';
 import { referees, rankLabels } from '../lib/mockData';
-
-const STORAGE_KEY = 'coda_config_v1';
+import { supabase } from '../lib/supabaseClient';
 
 const RANK_FULL = {
   international: 'مساعد حكم دولي',
@@ -94,10 +93,11 @@ export default function CodaSetup() {
 
   const [cfg, setCfg] = useState({ sprint1: 10, lateralRight: 8, lateralLeft: 8, sprint2: 10 });
   const [limits, setLimits] = useState({ international: '', first: '', second: '' });
-  const [savedLimits, setSavedLimits] = useState({ international: '', first: '', second: '' });
+  const [configId, setConfigId] = useState(null);
   const [editOpen, setEditOpen] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [limitErrors, setLimitErrors] = useState({});
+  const [loading, setLoading] = useState(true);
 
   const [search, setSearch] = useState('');
   const [selectedIds, setSelectedIds] = useState(new Set());
@@ -107,49 +107,73 @@ export default function CodaSetup() {
   const [newGroupName, setNewGroupName] = useState('');
 
   useEffect(() => {
-    try {
-      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
-      if (saved) {
-        setCfg({
-          sprint1: saved.sprint1 ?? 10,
-          lateralRight: saved.lateralRight ?? 8,
-          lateralLeft: saved.lateralLeft ?? 8,
-          sprint2: saved.sprint2 ?? 10,
-        });
-        const lim = {
-          international: saved.limitInternational ?? '',
-          first: saved.limitFirst ?? '',
-          second: saved.limitSecond ?? '',
-        };
-        setLimits(lim);
-        setSavedLimits(lim);
+    (async () => {
+      try {
+        const { data, error } = await supabase
+          .from('coda_test_configs')
+          .select('*')
+          .order('updated_at', { ascending: false })
+          .limit(1)
+          .maybeSingle();
+        if (error) throw error;
+        if (data) {
+          setConfigId(data.id);
+          setCfg({
+            sprint1: data.sprint1_m ?? 10,
+            lateralRight: data.lateral_right_m ?? 8,
+            lateralLeft: data.lateral_left_m ?? 8,
+            sprint2: data.sprint2_m ?? 10,
+          });
+          const lim = {
+            international: data.limit_international ?? '',
+            first: data.limit_first ?? '',
+            second: data.limit_second ?? '',
+          };
+          setLimits(lim);
+        }
+      } catch (err) {
+        console.warn('Could not load CODA config from database:', err.message);
+      } finally {
+        setLoading(false);
       }
-    } catch (_) {}
+    })();
   }, []);
 
   const limitsComplete = limits.international !== '' && limits.first !== '' && limits.second !== '';
   const canStart = limitsComplete && selectedIds.size > 0;
 
-  function handleSave() {
+  async function handleSave() {
     const errors = {};
     if (!limits.international) errors.international = true;
     if (!limits.first) errors.first = true;
     if (!limits.second) errors.second = true;
     if (Object.keys(errors).length) { setLimitErrors(errors); return; }
     setLimitErrors({});
-    const data = {
-      sprint1: Number(cfg.sprint1),
-      lateralRight: Number(cfg.lateralRight),
-      lateralLeft: Number(cfg.lateralLeft),
-      sprint2: Number(cfg.sprint2),
-      limitInternational: limits.international,
-      limitFirst: limits.first,
-      limitSecond: limits.second,
+    const payload = {
+      sprint1_m: Number(cfg.sprint1),
+      lateral_right_m: Number(cfg.lateralRight),
+      lateral_left_m: Number(cfg.lateralLeft),
+      sprint2_m: Number(cfg.sprint2),
+      limit_international: Number(limits.international),
+      limit_first: Number(limits.first),
+      limit_second: Number(limits.second),
+      updated_at: new Date().toISOString(),
     };
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-    setSavedLimits({ international: limits.international, first: limits.first, second: limits.second });
-    setSaveSuccess(true);
-    setTimeout(() => { setSaveSuccess(false); setEditOpen(false); }, 1200);
+    try {
+      if (configId) {
+        const { error } = await supabase.from('coda_test_configs').update(payload).eq('id', configId);
+        if (error) throw error;
+      } else {
+        const { data, error } = await supabase.from('coda_test_configs').insert(payload).select().single();
+        if (error) throw error;
+        setConfigId(data.id);
+      }
+      setSaveSuccess(true);
+      setTimeout(() => { setSaveSuccess(false); setEditOpen(false); }, 1200);
+    } catch (err) {
+      console.error('Failed to save CODA config:', err.message);
+      alert('تعذر حفظ الإعدادات في قاعدة البيانات. تأكد من تشغيل ملف CODA_MIGRATION.sql أولاً.');
+    }
   }
 
   function handleLimitChange(rank, val) {
@@ -199,25 +223,50 @@ export default function CodaSetup() {
 
   const allVisibleSelected = filteredReferees.length > 0 && filteredReferees.every(r => selectedIds.has(r.id));
 
-  function handleStart() {
+  async function handleStart() {
     if (!canStart) return;
     const selected = assistantReferees.filter(r => selectedIds.has(r.id));
-    navigate('/fitness/coda/results', {
-      state: {
-        config: {
-          sprint1: Number(cfg.sprint1),
-          lateralRight: Number(cfg.lateralRight),
-          lateralLeft: Number(cfg.lateralLeft),
-          sprint2: Number(cfg.sprint2),
-          limitInternational: limits.international,
-          limitFirst: limits.first,
-          limitSecond: limits.second,
+    const configData = {
+      sprint1: Number(cfg.sprint1),
+      lateralRight: Number(cfg.lateralRight),
+      lateralLeft: Number(cfg.lateralLeft),
+      sprint2: Number(cfg.sprint2),
+      limitInternational: limits.international,
+      limitFirst: limits.first,
+      limitSecond: limits.second,
+    };
+    try {
+      let sessionId = null;
+      if (configId) {
+        const { data, error } = await supabase.from('coda_test_sessions').insert({
+          config_id: configId,
+          test_date: new Date().toISOString().split('T')[0],
+          referee_ids: selected.map(r => r.id),
+          groups_json: groups.filter(g => g.refereeIds.some(id => selectedIds.has(id))),
+        }).select().single();
+        if (!error) sessionId = data.id;
+      }
+      navigate('/fitness/coda/results', {
+        state: {
+          config: configData,
+          selectedReferees: selected,
+          groups: groups.filter(g => g.refereeIds.some(id => selectedIds.has(id))),
+          testDate: new Date().toLocaleDateString('ar-EG'),
+          sessionId,
+          configId,
         },
-        selectedReferees: selected,
-        groups: groups.filter(g => g.refereeIds.some(id => selectedIds.has(id))),
-        testDate: new Date().toLocaleDateString('ar-EG'),
-      },
-    });
+      });
+    } catch (err) {
+      console.error('Failed to create session:', err.message);
+      navigate('/fitness/coda/results', {
+        state: {
+          config: configData,
+          selectedReferees: selected,
+          groups: groups.filter(g => g.refereeIds.some(id => selectedIds.has(id))),
+          testDate: new Date().toLocaleDateString('ar-EG'),
+        },
+      });
+    }
   }
 
   const totalDistance = Number(cfg.sprint1) + Number(cfg.lateralRight) + Number(cfg.lateralLeft) + Number(cfg.sprint2);

@@ -2,6 +2,7 @@ import React, { useState, useMemo, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Sidebar from '../partials/Sidebar';
 import Header from '../partials/Header';
+import { supabase } from '../lib/supabaseClient';
 
 const RANK_FULL = {
   international: 'مساعد حكم دولي',
@@ -48,7 +49,7 @@ export default function CodaResults() {
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  const { config, selectedReferees, groups, testDate } = location.state || {};
+  const { config, selectedReferees, groups, testDate, sessionId } = location.state || {};
 
   // Redirect back if no data
   useEffect(() => {
@@ -93,9 +94,31 @@ export default function CodaResults() {
   const totalCount = selectedReferees?.length || 0;
   const allEntered = enteredCount === totalCount;
 
-  function handleSaveAll() {
-    // In a real app this would persist to Supabase; here we just navigate back
-    navigate('/fitness/coda');
+  async function handleSaveAll() {
+    if (!sessionId) {
+      navigate('/fitness/coda');
+      return;
+    }
+    try {
+      const rows = selectedReferees.map(ref => {
+        const r = results[ref.id] || { time1: '', time2: '', result: 'pending' };
+        return {
+          session_id: sessionId,
+          referee_id: ref.id,
+          referee_name: ref.name,
+          referee_rank: ref.rank,
+          time1: r.time1 !== '' ? Number(r.time1) : null,
+          time2: r.time2 !== '' ? Number(r.time2) : null,
+          result: r.result,
+        };
+      });
+      const { error } = await supabase.from('coda_test_results').insert(rows);
+      if (error) throw error;
+      navigate('/fitness/coda');
+    } catch (err) {
+      console.error('Failed to save results:', err.message);
+      alert('تعذر حفظ النتائج في قاعدة البيانات.');
+    }
   }
 
   if (!config || !selectedReferees) return null;
