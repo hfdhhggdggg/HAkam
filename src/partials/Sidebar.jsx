@@ -258,9 +258,9 @@ function Sidebar({
                             </NavLink>
                           </li>
                           <li className="mb-1 last:mb-0">
-                            <span className="block truncate text-gray-300 dark:text-gray-600 px-2 py-1 cursor-not-allowed">
+                            <NavLink end to="/fitness/rsa" className={fitnessLinkClass}>
                               <span className={spanClass}>RSA</span>
-                            </span>
+                            </NavLink>
                           </li>
                           <li className="mb-1 last:mb-0">
                             <span className="block truncate text-gray-300 dark:text-gray-600 px-2 py-1 cursor-not-allowed">

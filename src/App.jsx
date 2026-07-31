@@ -25,6 +25,8 @@ import Calendar from './pages/Calendar';
 import TrainingGroups from './pages/TrainingGroups';
 import CodaSetup from './pages/CodaSetup';
 import CodaResults from './pages/CodaResults';
+import RSASetup from './pages/RSASetup';
+import RSAResults from './pages/RSAResults';
 import { useAuth } from './utils/AuthContext';
 
 function ProtectedRoute({ children, roles }) {
@@ -171,6 +173,22 @@ function App() {
           element={
             <ProtectedRoute roles={['admin', 'trainer']}>
               <CodaResults />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/fitness/rsa"
+          element={
+            <ProtectedRoute roles={['admin', 'trainer']}>
+              <RSASetup />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/fitness/rsa/results"
+          element={
+            <ProtectedRoute roles={['admin', 'trainer']}>
+              <RSAResults />
             </ProtectedRoute>
           }
         />
