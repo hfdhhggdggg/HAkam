@@ -217,14 +217,16 @@ function Sidebar({
               </SidebarLinkGroup>
 
               {/* اختبارات اللياقة */}
-              <SidebarLinkGroup activecondition={pathname.includes("tasks") || pathname.includes("fitness")}>
+              <SidebarLinkGroup activecondition={pathname.includes("tasks") || pathname.includes("fitness") || pathname.includes("coda")}>
                 {(handleClick, open) => {
+                  const fitnessLinkClass = ({ isActive }) =>
+                    "block transition duration-150 truncate " + (isActive ? "text-[#147B60] bg-[#E6F2EF] rounded-md px-2 py-1" : "text-gray-500/90 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200");
                   return (
                     <React.Fragment>
                       <a
                         href="#0"
                         className={`block text-gray-800 dark:text-gray-100 truncate transition duration-150 ${
-                          pathname.includes("tasks") || pathname.includes("fitness") ? "" : "hover:text-gray-900 dark:hover:text-white"
+                          pathname.includes("tasks") || pathname.includes("fitness") || pathname.includes("coda") ? "" : "hover:text-gray-900 dark:hover:text-white"
                         }`}
                         onClick={(e) => {
                           e.preventDefault();
@@ -234,7 +236,7 @@ function Sidebar({
                       >
                         <div className="flex items-center justify-between">
                           <div className="flex items-center">
-                            <svg className={`shrink-0 fill-current ${pathname.includes('tasks') || pathname.includes('fitness') ? 'text-violet-500' : 'text-gray-400 dark:text-gray-500'}`} xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+                            <svg className={`shrink-0 fill-current ${pathname.includes('tasks') || pathname.includes('fitness') || pathname.includes('coda') ? 'text-[#147B60]' : 'text-gray-400 dark:text-gray-500'}`} xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
                               <path d="M7.586 9H1a1 1 0 1 1 0-2h6.586L6.293 5.707a1 1 0 0 1 1.414-1.414l3 3a1 1 0 0 1 0 1.414l-3 3a1 1 0 1 1-1.414-1.414L7.586 9ZM3.075 4.572a1 1 0 1 1-1.64-1.144 8 8 0 1 1 0 9.144 1 1 0 0 1 1.64-1.144 6 6 0 1 0 0-6.856Z" />
                             </svg>
                             <span className="text-sm font-medium ms-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
@@ -251,12 +253,27 @@ function Sidebar({
                       <div className="lg:hidden lg:sidebar-expanded:block 2xl:block">
                         <ul className={`ps-8 mt-1 ${!open && "hidden"}`}>
                           <li className="mb-1 last:mb-0">
-                            <NavLink end to="/tasks/kanban" className={linkClass}>
+                            <NavLink end to="/fitness/coda" className={fitnessLinkClass}>
+                              <span className={spanClass}>CODA</span>
+                            </NavLink>
+                          </li>
+                          <li className="mb-1 last:mb-0">
+                            <span className="block truncate text-gray-300 dark:text-gray-600 px-2 py-1 cursor-not-allowed">
+                              <span className={spanClass}>RSA</span>
+                            </span>
+                          </li>
+                          <li className="mb-1 last:mb-0">
+                            <span className="block truncate text-gray-300 dark:text-gray-600 px-2 py-1 cursor-not-allowed">
+                              <span className={spanClass}>Interval</span>
+                            </span>
+                          </li>
+                          <li className="mb-1 last:mb-0">
+                            <NavLink end to="/tasks/kanban" className={fitnessLinkClass}>
                               <span className={spanClass}>Kanban</span>
                             </NavLink>
                           </li>
                           <li className="mb-1 last:mb-0">
-                            <NavLink end to="/tasks/list" className={linkClass}>
+                            <NavLink end to="/tasks/list" className={fitnessLinkClass}>
                               <span className={spanClass}>List</span>
                             </NavLink>
                           </li>

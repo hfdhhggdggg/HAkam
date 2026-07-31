@@ -23,6 +23,8 @@ import NotFound from './pages/NotFound';
 import StatsPage from './pages/StatsPage';
 import Calendar from './pages/Calendar';
 import TrainingGroups from './pages/TrainingGroups';
+import CodaSetup from './pages/CodaSetup';
+import CodaResults from './pages/CodaResults';
 import { useAuth } from './utils/AuthContext';
 
 function ProtectedRoute({ children, roles }) {
@@ -153,6 +155,22 @@ function App() {
           element={
             <ProtectedRoute>
               <RefereeProfile />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/fitness/coda"
+          element={
+            <ProtectedRoute roles={['admin', 'trainer']}>
+              <CodaSetup />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/fitness/coda/results"
+          element={
+            <ProtectedRoute roles={['admin', 'trainer']}>
+              <CodaResults />
             </ProtectedRoute>
           }
         />
